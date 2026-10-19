@@ -15,3 +15,4 @@ MonoBehaviour:
   zoneName: Forest
   enemyTypes:
   - {fileID: 11400000, guid: 0c965a0f5e74d9e4ba79e41396bbaf71, type: 2}
+  - {fileID: 11400000, guid: 1caf23d5b3a8c1046b1b4809669672ae, type: 2}
