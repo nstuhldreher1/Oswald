@@ -114,12 +114,13 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator PlayerTurn()
     {
-        EnemyManager.instance.SetCurrentEnemyHealth(EnemyManager.instance.GetCurrentEnemyHealth() - PlayerManager.instance.GetCurrentPlayerAttack());
+        int damage = calculateDamage(PlayerManager.instance.GetCurrentPlayerAttack());
+        EnemyManager.instance.SetCurrentEnemyHealth(EnemyManager.instance.GetCurrentEnemyHealth() - damage);
         battleOptionsPanel.SetActive(false);
         dialoguePanel.SetActive(true);
         UpdateEnemyHealthUI();
-        yield return StartCoroutine(TypeWriterEffect("Oswald attacks " + EnemyManager.instance.GetCurrentEnemyName() + " for " + PlayerManager.instance.GetCurrentPlayerAttack() + " damage.", 0.05f));
-        Debug.Log("Player attacks " + EnemyManager.instance.GetCurrentEnemyName() + " for " + PlayerManager.instance.GetCurrentPlayerAttack() + " damage.");
+        yield return StartCoroutine(TypeWriterEffect("Oswald attacks " + EnemyManager.instance.GetCurrentEnemyName() + " for " + damage + " damage.", 0.05f));
+        Debug.Log("Player attacks " + EnemyManager.instance.GetCurrentEnemyName() + " for " + damage + " damage.");
         if (EnemyManager.instance.GetCurrentEnemyHealth() <= 0)
         {
             Debug.Log("Enemy defeated!");
@@ -148,12 +149,13 @@ public class BattleManager : MonoBehaviour
     private IEnumerator EnemyTurn()
     {
         Debug.Log("Player health: " + PlayerManager.instance.GetCurrentPlayerHealth());
-        PlayerManager.instance.SetCurrentPlayerHealth(PlayerManager.instance.GetCurrentPlayerHealth() - EnemyManager.instance.GetCurrentEnemyAttack());
+        int damage = calculateDamage(EnemyManager.instance.GetCurrentEnemyAttack());
+        PlayerManager.instance.SetCurrentPlayerHealth(PlayerManager.instance.GetCurrentPlayerHealth() - damage);
         battleOptionsPanel.SetActive(false);
         dialoguePanel.SetActive(true);
         UpdatePlayerHealthUI();
-        yield return StartCoroutine(TypeWriterEffect(EnemyManager.instance.GetCurrentEnemyName() + " attacks Oswald for " + EnemyManager.instance.GetCurrentEnemyAttack() + " damage.", 0.05f));
-        Debug.Log(EnemyManager.instance.GetCurrentEnemyName() + " attacks player for " + EnemyManager.instance.GetCurrentEnemyAttack() + " damage.");
+        yield return StartCoroutine(TypeWriterEffect(EnemyManager.instance.GetCurrentEnemyName() + " attacks Oswald for " + damage + " damage.", 0.05f));
+        Debug.Log(EnemyManager.instance.GetCurrentEnemyName() + " attacks player for " + damage + " damage.");
         if (PlayerManager.instance.GetCurrentPlayerHealth() <= 0)
         {
             Debug.Log("Player defeated!");
@@ -190,6 +192,18 @@ public class BattleManager : MonoBehaviour
             yield return StartCoroutine(TypeWriterEffect("Oswald failed to run from battle!", 0.05f));
             StartCoroutine(EnemyTurn());
         }
+    }
+
+    private int calculateDamage(int attack)
+    {
+        if (attack <= 0)
+        {
+            return 0;
+        }
+
+        int minDamage = Mathf.CeilToInt(attack * 0.75f);
+        int maxDamage = Mathf.FloorToInt(attack * 1.25f);
+        return Random.Range(minDamage, maxDamage + 1);
     }
 
     public void EndBattle()
