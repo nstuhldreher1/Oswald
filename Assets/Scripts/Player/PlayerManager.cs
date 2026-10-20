@@ -84,19 +84,12 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
 
     public void LoadPrevBattleData(DynamicGameData data)
     {
-        maxPlayerHealth = data.playerHealth;
-        currentPlayerHealth = data.playerHealth;
-        currentPlayerAttack = data.playerAttack;
-        currentPlayerSpeed = data.playerSpeed;
         playerPosition = data.playerPosition;
     }
 
     public void SavePrevBattleData(ref DynamicGameData data)
     {
-        data.maxPlayerHealth = maxPlayerHealth;
-        data.playerHealth = currentPlayerHealth;
-        data.playerAttack = currentPlayerAttack;
-        data.playerSpeed = currentPlayerSpeed;
+        
         data.playerPosition = playerPosition;
     }
 }
