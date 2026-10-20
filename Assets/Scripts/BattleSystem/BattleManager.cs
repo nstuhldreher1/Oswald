@@ -11,7 +11,7 @@ public class BattleManager : MonoBehaviour
     private GameObject battleOptionsPanel;
     private TMP_Text playerHealthText;
     private TMP_Text enemyHealthText;
-    private Sprite currentEnemySprite;
+    private SpriteRenderer currentEnemySprite;
     private Animator attackAnimator;
     
     private bool isPlayerTurn = true;
@@ -26,7 +26,7 @@ public class BattleManager : MonoBehaviour
         dialoguePanel = GameObject.Find("Battle Dialogue");
         dialogueText = dialoguePanel.transform.Find("Dialogue Text").GetComponent<TMP_Text>();
         battleOptionsPanel = GameObject.Find("Character Panel");
-        currentEnemySprite = GameObject.Find("Enemy Sprite").GetComponent<SpriteRenderer>().sprite;
+        currentEnemySprite = GameObject.Find("Enemy Sprite").GetComponent<SpriteRenderer>();
         enemyHealthText = GameObject.Find("Enemy Health").GetComponent<TMP_Text>();
         playerHealthText = GameObject.Find("HP Number").GetComponent<TMP_Text>();
         attackAnimator = GameObject.Find("AttackAnimation").GetComponent<Animator>();
@@ -45,7 +45,7 @@ public class BattleManager : MonoBehaviour
 
         EnemyManager.instance.SetEnemyData(currentEnemyData);
 
-        currentEnemySprite = currentEnemyData.enemySprite;
+        currentEnemySprite.sprite = currentEnemyData.enemySprite;
         UpdateEnemyHealthUI();
         UpdatePlayerHealthUI();
 
