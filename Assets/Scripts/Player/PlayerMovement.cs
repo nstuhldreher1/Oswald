@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        animator.Play("IdleFront");
         if (PlayerManager.instance.GetCurrentPlayerPosition() != null)
         {
             transform.position = PlayerManager.instance.GetCurrentPlayerPosition();
