@@ -12,6 +12,7 @@ public class BattleManager : MonoBehaviour
     private TMP_Text playerHealthText;
     private TMP_Text enemyHealthText;
     private Sprite currentEnemySprite;
+    private Animator attackAnimator;
     
     private bool isPlayerTurn = true;
 
@@ -28,6 +29,7 @@ public class BattleManager : MonoBehaviour
         currentEnemySprite = GameObject.Find("Enemy Sprite").GetComponent<SpriteRenderer>().sprite;
         enemyHealthText = GameObject.Find("Enemy Health").GetComponent<TMP_Text>();
         playerHealthText = GameObject.Find("HP Number").GetComponent<TMP_Text>();
+        attackAnimator = GameObject.Find("AttackAnimation").GetComponent<Animator>();
 
         instance = this;
     }
@@ -118,6 +120,7 @@ public class BattleManager : MonoBehaviour
         EnemyManager.instance.SetCurrentEnemyHealth(EnemyManager.instance.GetCurrentEnemyHealth() - damage);
         battleOptionsPanel.SetActive(false);
         dialoguePanel.SetActive(true);
+        yield return StartCoroutine(animateAttack());
         UpdateEnemyHealthUI();
         yield return StartCoroutine(TypeWriterEffect("Oswald attacks " + EnemyManager.instance.GetCurrentEnemyName() + " for " + damage + " damage.", 0.05f));
         Debug.Log("Player attacks " + EnemyManager.instance.GetCurrentEnemyName() + " for " + damage + " damage.");
@@ -204,6 +207,18 @@ public class BattleManager : MonoBehaviour
         int minDamage = Mathf.CeilToInt(attack * 0.75f);
         int maxDamage = Mathf.FloorToInt(attack * 1.25f);
         return Random.Range(minDamage, maxDamage + 1);
+    }
+
+    private IEnumerator animateAttack()
+    {
+        if (attackAnimator != null)
+        {
+            attackAnimator.Play("Base Layer.Attack", 0, 0f);
+        }else
+        {
+            Debug.LogWarning("Attack Animator is not assigned.");
+        }
+        yield return null;
     }
 
     public void EndBattle()
