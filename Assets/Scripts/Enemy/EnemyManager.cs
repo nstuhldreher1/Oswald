@@ -11,6 +11,7 @@ public class EnemyManager : MonoBehaviour
     private string currentEnemyName;
     private Sprite currentEnemySprite;
     private int experienceReward;
+    private int enemyLevel;
 
 
     private void Awake()
@@ -63,7 +64,12 @@ public class EnemyManager : MonoBehaviour
         return currentEnemyName;
     }
 
-    public void SetEnemyData(EnemyData data)
+    public int GetCurrentEnemyExperienceReward()
+    {
+        return experienceReward;
+    }
+
+    public void SetEnemyData(EnemyData data, EncounterZoneData encounterZoneData)
     {
         enemyData = data;
         currentEnemyHealth = data.health;
@@ -71,6 +77,21 @@ public class EnemyManager : MonoBehaviour
         currentEnemySpeed = data.speed;
         currentEnemyName = data.enemyName;
         currentEnemySprite = data.enemySprite;
+        enemyLevel = calculateEnemyLevel(encounterZoneData);
+        experienceReward = calculateExperienceReward(enemyLevel, data.baseExperienceReward);
+    }
+
+    public int calculateEnemyLevel(EncounterZoneData encounterZoneData)
+    {
+        int minLevel = encounterZoneData.levelMin;
+        int maxLevel = encounterZoneData.levelMax;
+
+        return Random.Range(minLevel, maxLevel + 1);
+    }
+
+    public int calculateExperienceReward(int enemyLevel, int baseExperienceReward)
+    {
+        return baseExperienceReward * Mathf.RoundToInt(Mathf.Pow(enemyLevel, 1.25f)); 
     }
 
 

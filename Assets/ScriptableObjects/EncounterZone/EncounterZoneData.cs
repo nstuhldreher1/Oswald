@@ -5,4 +5,7 @@ public class EncounterZoneData : ScriptableObject
 {
     public string zoneName;
     public EnemyData[] enemyTypes;
+
+    public int levelMin;
+    public int levelMax;
 }

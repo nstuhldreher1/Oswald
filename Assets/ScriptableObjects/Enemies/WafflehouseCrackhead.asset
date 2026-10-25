@@ -16,4 +16,5 @@ MonoBehaviour:
   health: 30
   speed: 5
   attack: 5
+  baseExperienceReward: 10
   enemySprite: {fileID: -3867917629948713275, guid: 46fd594387f6c4241b89b62d9b5f31e4, type: 3}

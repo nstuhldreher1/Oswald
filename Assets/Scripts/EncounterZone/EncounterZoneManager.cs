@@ -6,6 +6,7 @@ public class EncounterZoneManager : MonoBehaviour
     private bool isPlayerInEncounterZone = false;
     private EncounterZoneData currentEncounterZoneData;
     private EnemyData currentEnemyData;
+    private EncounterZoneData currentEnemyEncounterZoneData;
     private float playerInZoneDistance = 0f;
 
     private float distanceThreshold = 5f; 
@@ -48,6 +49,11 @@ public class EncounterZoneManager : MonoBehaviour
         return currentEnemyData;
     }
 
+    public EncounterZoneData GetCurrentEnemyEncounterZoneData()
+    {
+        return currentEnemyEncounterZoneData;
+    }
+
     public void AddPlayerDistanceMoved(float distance)
     {
         if (isPlayerInEncounterZone)
@@ -74,7 +80,7 @@ public class EncounterZoneManager : MonoBehaviour
 
     public void LoadBattleScene()
     {
-        if (currentEnemyData != null)
+        if (currentEnemyData != null && currentEnemyEncounterZoneData != null)
         {
             Debug.Log("Loading battle scene with enemy: " + currentEnemyData.enemyName);
             DataPersistenceManager.instance.SavePrevBattle();
@@ -83,19 +89,31 @@ public class EncounterZoneManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No enemy data available to load battle scene.");
+            Debug.LogWarning("Enemy or encounter zone data is missing; cannot load battle scene.");
         }
     }
 
 
     public void PreRandomizeEnemy()
     {
-        if (currentEncounterZoneData != null && currentEncounterZoneData.enemyTypes.Length > 0)
+        currentEnemyData = null;
+        currentEnemyEncounterZoneData = null;
+
+        if (currentEncounterZoneData != null &&
+            currentEncounterZoneData.enemyTypes != null &&
+            currentEncounterZoneData.enemyTypes.Length > 0)
         {
             int randomIndex = Random.Range(0, currentEncounterZoneData.enemyTypes.Length);
             currentEnemyData = currentEncounterZoneData.enemyTypes[randomIndex];
-            Debug.Log("Randomized enemy: " + currentEnemyData.enemyName);
-           
+            currentEnemyEncounterZoneData = currentEncounterZoneData;
+            if (currentEnemyData != null)
+            {
+                Debug.Log("Randomized enemy: " + currentEnemyData.enemyName);
+            }
+            else
+            {
+                Debug.LogWarning("Selected enemy data is missing from the encounter zone.");
+            }
         }
         else
         {

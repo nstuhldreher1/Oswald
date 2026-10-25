@@ -10,4 +10,7 @@ public class GameData
     public int playerAttack;
     public int playerSpeed;
     public int maxPlayerHealth;
+    public int experienceToNextLevel;
+    public int playerLevel;
+    public int playerExperience;
 }

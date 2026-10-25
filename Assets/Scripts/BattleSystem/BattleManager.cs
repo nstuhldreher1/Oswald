@@ -6,6 +6,7 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager instance { get; private set; }
     private EnemyData currentEnemyData;
+    private EncounterZoneData currentEncounterZoneData;
     private GameObject dialoguePanel;
     private TMP_Text dialogueText;
     private GameObject battleOptionsPanel;
@@ -36,14 +37,21 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        currentEncounterZoneData = EncounterZoneManager.instance?.GetCurrentEnemyEncounterZoneData();
         currentEnemyData = EncounterZoneManager.instance?.GetCurrentEnemyData();
-        if (currentEnemyData == null)
+        if (currentEnemyData == null || currentEncounterZoneData == null)
         {
-            Debug.LogWarning("No current enemy data found.");
+            Debug.LogWarning("Current enemy or encounter zone data is missing.");
             return;
         }
 
-        EnemyManager.instance.SetEnemyData(currentEnemyData);
+        if (EnemyManager.instance == null)
+        {
+            Debug.LogError("No EnemyManager is available to initialize the battle.");
+            return;
+        }
+
+        EnemyManager.instance.SetEnemyData(currentEnemyData, currentEncounterZoneData);
 
         currentEnemySprite.sprite = currentEnemyData.enemySprite;
         UpdateEnemyHealthUI();
@@ -127,6 +135,7 @@ public class BattleManager : MonoBehaviour
         if (EnemyManager.instance.GetCurrentEnemyHealth() <= 0)
         {
             Debug.Log("Enemy defeated!");
+            AddExperienceReward();
             yield return StartCoroutine(TypeWriterEffect(EnemyManager.instance.GetCurrentEnemyName() + " has been defeated!", 0.05f));
             EndBattle();
             yield break;
@@ -207,6 +216,18 @@ public class BattleManager : MonoBehaviour
         int minDamage = Mathf.CeilToInt(attack * 0.75f);
         int maxDamage = Mathf.FloorToInt(attack * 1.25f);
         return Random.Range(minDamage, maxDamage + 1);
+    }
+
+    private void AddExperienceReward()
+    {
+        PlayerManager.instance.SetCurrentPlayerExperience(PlayerManager.instance.GetCurrentPlayerExperience() + EnemyManager.instance.GetCurrentEnemyExperienceReward());
+        Debug.Log("Player gained " + EnemyManager.instance.GetCurrentEnemyExperienceReward() + " experience points.");
+        Debug.Log("Player has " + PlayerManager.instance.GetCurrentPlayerExperience() + " out of " + PlayerManager.instance.GetExperienceToNextLevel() + " experience points.");
+        if (PlayerManager.instance.GetCurrentPlayerExperience() >= PlayerManager.instance.GetExperienceToNextLevel())
+        {
+            PlayerManager.instance.LevelUp();
+            Debug.Log("Player leveled up to level " + PlayerManager.instance.GetCurrentPlayerLevel());
+        }
     }
 
     private IEnumerator animateAttack()
