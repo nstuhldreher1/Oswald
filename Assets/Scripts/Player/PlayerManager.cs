@@ -44,6 +44,18 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
     {
         playerPosition = position;
     }
+    public void SetCurrentPlayerLevel(int level)
+    {
+        playerLevel = level;
+    }
+    public void SetCurrentPlayerExperience(int experience)
+    {
+        playerExperience = experience;
+    }
+    public void SetExperienceToNextLevel(int experience)
+    {
+        experienceToNextLevel = experience;
+    }
 
     public Vector2 GetCurrentPlayerPosition()
     {
@@ -63,6 +75,19 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
         return currentPlayerSpeed;
     }
 
+    public int GetCurrentPlayerLevel()
+    {
+        return playerLevel;
+    }
+    public int GetCurrentPlayerExperience()
+    {
+        return playerExperience;
+    }
+    public int GetExperienceToNextLevel()
+    {
+        return experienceToNextLevel;
+    }
+
     public void LoadData(GameData data)
     {
         maxPlayerHealth = data.playerHealth;
@@ -70,7 +95,14 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
         currentPlayerAttack = data.playerAttack;
         currentPlayerSpeed = data.playerSpeed;
         playerPosition = data.playerPosition;
+        experienceToNextLevel = CalculateExperienceToNextLevel(data.playerLevel);
+        playerLevel = data.playerLevel;
+        playerExperience = data.playerExperience;
         Debug.Log("Player data loaded: Health = " + currentPlayerHealth + ", Attack = " + currentPlayerAttack + ", Speed = " + currentPlayerSpeed);
+    }
+    private int CalculateExperienceToNextLevel(int level)
+    {
+        return 100 * Mathf.RoundToInt(Mathf.Pow(level, 1.25f)); ; 
     }
 
     public void SaveData(ref GameData data)
@@ -80,6 +112,15 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
         data.playerAttack = currentPlayerAttack;
         data.playerSpeed = currentPlayerSpeed;
         data.playerPosition = playerPosition;
+        data.playerLevel = playerLevel;
+        data.playerExperience = playerExperience;
+    }
+
+    public void LevelUp()
+    {
+        playerLevel++;
+        experienceToNextLevel = CalculateExperienceToNextLevel(playerLevel);
+        playerExperience = 0; // Reset experience after leveling up
     }
 
     public void LoadPrevBattleData(DynamicGameData data)
