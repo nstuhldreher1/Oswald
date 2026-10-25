@@ -69,6 +69,11 @@ public class EnemyManager : MonoBehaviour
         return experienceReward;
     }
 
+    public int GetCurrentEnemyLevel()
+    {
+        return enemyLevel;
+    }
+
     public void SetEnemyData(EnemyData data, EncounterZoneData encounterZoneData)
     {
         enemyData = data;

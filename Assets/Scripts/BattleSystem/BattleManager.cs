@@ -72,7 +72,7 @@ public class BattleManager : MonoBehaviour
         }
 
         StartCoroutine(BattleIntro());
-        Debug.Log("Enemy: " + EnemyManager.instance.GetCurrentEnemyName());
+        Debug.Log("Enemy: " + EnemyManager.instance.GetCurrentEnemyName() + " Level: " + EnemyManager.instance.GetCurrentEnemyLevel());
     }
 
     private IEnumerator BattleIntro()
