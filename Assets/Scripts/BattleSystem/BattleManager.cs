@@ -166,7 +166,17 @@ public class BattleManager : MonoBehaviour
     public IEnumerator RunFromBattle()
     {
         float roll = Random.value;
-        if(roll <= 0.5f) // 50% chance to successfully run
+        bool isFaster = PlayerManager.instance.GetCurrentPlayerSpeed() > EnemyManager.instance.GetCurrentEnemySpeed();
+        if(roll <= 0.8f && isFaster) // 80% chance to successfully run
+        {
+            Debug.Log("Player successfully ran from battle.");
+            DataPersistenceManager.instance.SetLoadCheckpoint(false);
+            dialoguePanel.SetActive(true);
+            battleOptionsPanel.SetActive(false);
+            yield return StartCoroutine(TypeWriterEffect("Oswald successfully ran from battle!", 0.03f));
+            EndBattle();
+        }
+        else if(roll <= 0.5f && !isFaster) // 50% chance to successfully run if slower
         {
             Debug.Log("Player successfully ran from battle.");
             DataPersistenceManager.instance.SetLoadCheckpoint(false);
