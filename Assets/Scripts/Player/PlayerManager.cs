@@ -91,12 +91,12 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
     public void LoadData(GameData data)
     {
         maxPlayerHealth = data.playerHealth;
-        currentPlayerHealth = data.playerHealth;
-        currentPlayerAttack = data.playerAttack;
-        currentPlayerSpeed = data.playerSpeed;
+        playerLevel = data.playerLevel;
+        currentPlayerHealth = CalculateHealthWithLevel(data.playerHealth, data.playerLevel);
+        currentPlayerAttack = CalculateStatWithLevel(data.playerAttack, data.playerLevel);
+        currentPlayerSpeed = CalculateStatWithLevel(data.playerSpeed, data.playerLevel);
         playerPosition = data.playerPosition;
         experienceToNextLevel = CalculateExperienceToNextLevel(data.playerLevel);
-        playerLevel = data.playerLevel;
         playerExperience = data.playerExperience;
         Debug.Log("Player data loaded: Health = " + currentPlayerHealth + ", Attack = " + currentPlayerAttack + ", Speed = " + currentPlayerSpeed);
     }
@@ -108,9 +108,6 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
     public void SaveData(ref GameData data)
     {
         data.maxPlayerHealth = maxPlayerHealth;
-        data.playerHealth = currentPlayerHealth;
-        data.playerAttack = currentPlayerAttack;
-        data.playerSpeed = currentPlayerSpeed;
         data.playerPosition = playerPosition;
         data.playerLevel = playerLevel;
         data.playerExperience = playerExperience;
@@ -133,4 +130,15 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
         
         data.playerPosition = playerPosition;
     }
+
+    public int CalculateStatWithLevel(int baseStat, int level)
+    {
+        return Mathf.RoundToInt(baseStat + (baseStat * 0.15f * (level - 1)));
+    }
+
+     private int CalculateHealthWithLevel(int baseHealth, int level)
+    {
+        return Mathf.RoundToInt(baseHealth + (10 * (level - 1)));
+    }
+
 }

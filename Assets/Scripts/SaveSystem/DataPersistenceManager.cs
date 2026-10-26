@@ -34,6 +34,7 @@ public class DataPersistenceManager : MonoBehaviour
          if (loadCheckpoint)
         {
             this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
+            Debug.Log("DataPersistenceManager initialized with file path: " + Application.persistentDataPath + "/" + fileName);
             this.dataPersistenceObjects = FindAllDataPersistenceObjects();
             LoadGame();
         }
@@ -71,7 +72,8 @@ public class DataPersistenceManager : MonoBehaviour
             maxPlayerHealth = 100,
             playerAttack = 10,
             playerSpeed = 5,
-            playerPosition = Vector2.zero
+            playerPosition = Vector2.zero,
+            playerLevel = 1,
         };
     }
 
