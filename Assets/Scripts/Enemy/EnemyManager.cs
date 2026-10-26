@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class EnemyManager : MonoBehaviour
     private Sprite currentEnemySprite;
     private int experienceReward;
     private int enemyLevel;
+    public event Action EnemyStatsChanged;
 
 
     private void Awake()
@@ -29,6 +31,7 @@ public class EnemyManager : MonoBehaviour
     public void SetCurrentEnemyHealth(int health)
     {
         currentEnemyHealth = health;
+        EnemyStatsChanged?.Invoke();
     }
 
     public void SetCurrentEnemyAttack(int attack)
@@ -84,6 +87,7 @@ public class EnemyManager : MonoBehaviour
         currentEnemyAttack = CalculateStatWithLevel(data.attack, enemyLevel);
         currentEnemySpeed = CalculateStatWithLevel(data.speed, enemyLevel);
         experienceReward = calculateExperienceReward(enemyLevel, data.baseExperienceReward);
+        EnemyStatsChanged?.Invoke(); // Notify listeners that enemy stats have changed
     }
 
     public int calculateEnemyLevel(EncounterZoneData encounterZoneData)
@@ -91,7 +95,7 @@ public class EnemyManager : MonoBehaviour
         int minLevel = encounterZoneData.levelMin;
         int maxLevel = encounterZoneData.levelMax;
 
-        return Random.Range(minLevel, maxLevel + 1);
+        return UnityEngine.Random.Range(minLevel, maxLevel + 1);
     }
 
     public int calculateExperienceReward(int enemyLevel, int baseExperienceReward)
@@ -107,9 +111,4 @@ public class EnemyManager : MonoBehaviour
     {
         return Mathf.RoundToInt(baseHealth + (5 * (level - 1)));
     }
-
-    
-
-
-   
 }

@@ -28,8 +28,6 @@ public class BattleManager : MonoBehaviour
         dialogueText = dialoguePanel.transform.Find("Dialogue Text").GetComponent<TMP_Text>();
         battleOptionsPanel = GameObject.Find("Character Panel");
         currentEnemySprite = GameObject.Find("Enemy Sprite").GetComponent<SpriteRenderer>();
-        enemyHealthText = GameObject.Find("Enemy Health").GetComponent<TMP_Text>();
-        playerHealthText = GameObject.Find("HP Number").GetComponent<TMP_Text>();
         attackAnimator = GameObject.Find("AttackAnimation").GetComponent<Animator>();
 
         instance = this;
@@ -54,11 +52,6 @@ public class BattleManager : MonoBehaviour
         EnemyManager.instance.SetEnemyData(currentEnemyData, currentEncounterZoneData);
 
         currentEnemySprite.sprite = currentEnemyData.enemySprite;
-        UpdateEnemyHealthUI();
-        UpdatePlayerHealthUI();
-
-
-
         dialoguePanel.SetActive(true);
         battleOptionsPanel.SetActive(false);
 
@@ -102,16 +95,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void UpdatePlayerHealthUI()
-    {
-        playerHealthText.text = "HP: " + PlayerManager.instance.GetCurrentPlayerHealth().ToString();
-    }
-
-    private void UpdateEnemyHealthUI()
-    {
-        enemyHealthText.text = "HP: " + EnemyManager.instance.GetCurrentEnemyHealth().ToString();
-    }
-
     public void PlayerAttack()
     {
         if (!isPlayerTurn)
@@ -129,7 +112,6 @@ public class BattleManager : MonoBehaviour
         battleOptionsPanel.SetActive(false);
         dialoguePanel.SetActive(true);
         yield return StartCoroutine(animateAttack());
-        UpdateEnemyHealthUI();
         yield return StartCoroutine(TypeWriterEffect("Oswald attacks " + EnemyManager.instance.GetCurrentEnemyName() + " for " + damage + " damage.", 0.05f));
         Debug.Log("Player attacks " + EnemyManager.instance.GetCurrentEnemyName() + " for " + damage + " damage.");
         if (EnemyManager.instance.GetCurrentEnemyHealth() <= 0)
@@ -165,7 +147,6 @@ public class BattleManager : MonoBehaviour
         PlayerManager.instance.SetCurrentPlayerHealth(PlayerManager.instance.GetCurrentPlayerHealth() - damage);
         battleOptionsPanel.SetActive(false);
         dialoguePanel.SetActive(true);
-        UpdatePlayerHealthUI();
         yield return StartCoroutine(TypeWriterEffect(EnemyManager.instance.GetCurrentEnemyName() + " attacks Oswald for " + damage + " damage.", 0.05f));
         Debug.Log(EnemyManager.instance.GetCurrentEnemyName() + " attacks player for " + damage + " damage.");
         if (PlayerManager.instance.GetCurrentPlayerHealth() <= 0)
