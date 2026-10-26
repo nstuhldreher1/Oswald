@@ -79,18 +79,17 @@ public class BattleManager : MonoBehaviour
     public void NextTurn()
     {
         Debug.Log("Battle started between player and " + EnemyManager.instance.GetCurrentEnemyName());
-        // Implement battle logic here
         if (isPlayerTurn)
         {
             Debug.Log("It's the player's turn.");
-            // Player's turn logic
+            
             dialoguePanel.SetActive(false);
             battleOptionsPanel.SetActive(true);
         }
         else
         {
             Debug.Log("It's the enemy's turn.");
-            // Enemy's turn logic
+            
             StartCoroutine(EnemyTurn());
         }
     }
@@ -137,7 +136,7 @@ public class BattleManager : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
 
-        yield return new WaitForSeconds(1f); // Wait for a second after the message is fully displayed
+        yield return new WaitForSeconds(1f); 
     }
 
     private IEnumerator EnemyTurn()
