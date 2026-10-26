@@ -99,25 +99,43 @@ public class EncounterZoneManager : MonoBehaviour
         currentEnemyData = null;
         currentEnemyEncounterZoneData = null;
 
-        if (currentEncounterZoneData != null &&
-            currentEncounterZoneData.enemyTypes != null &&
-            currentEncounterZoneData.enemyTypes.Length > 0)
+        if (currentEncounterZoneData == null ||
+            currentEncounterZoneData.encounterEntries == null)
         {
-            int randomIndex = Random.Range(0, currentEncounterZoneData.enemyTypes.Length);
-            currentEnemyData = currentEncounterZoneData.enemyTypes[randomIndex];
-            currentEnemyEncounterZoneData = currentEncounterZoneData;
-            if (currentEnemyData != null)
-            {
-                Debug.Log("Randomized enemy: " + currentEnemyData.enemyName);
-            }
-            else
-            {
-                Debug.LogWarning("Selected enemy data is missing from the encounter zone.");
-            }
+            Debug.LogWarning("No encounter entries available for the current zone.");
+            return;
         }
-        else
+
+        int totalWeight = 0;
+
+        foreach (EncounterEntry entry in currentEncounterZoneData.encounterEntries)
         {
-            Debug.LogWarning("No encounter zone data available for randomizing enemy.");
+            if (entry != null && entry.enemy != null && entry.weight > 0)
+                totalWeight += entry.weight;
+        }
+
+        if (totalWeight == 0)
+        {
+            Debug.LogWarning("The current zone has no valid encounter entries with positive weights.");
+            return;
+        }
+
+        int roll = Random.Range(0, totalWeight);
+
+        foreach (EncounterEntry entry in currentEncounterZoneData.encounterEntries)
+        {
+            if (entry == null || entry.enemy == null || entry.weight <= 0)
+                continue;
+
+            if (roll < entry.weight)
+            {
+                currentEnemyData = entry.enemy;
+                currentEnemyEncounterZoneData = currentEncounterZoneData;
+                Debug.Log("Randomized enemy: " + currentEnemyData.enemyName);
+                return;
+            }
+
+            roll -= entry.weight;
         }
     }
 
