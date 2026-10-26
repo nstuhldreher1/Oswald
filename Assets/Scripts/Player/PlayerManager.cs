@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class PlayerManager : MonoBehaviour, IDataPersistence
 {
@@ -12,7 +13,7 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
     private int playerExperience = 0;
     private int experienceToNextLevel = 100;
     private Vector2 playerPosition;
-
+    public event Action PlayerStatsChanged;
 
     private void Awake()
     {
@@ -29,6 +30,7 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
     public void SetCurrentPlayerHealth(int health)
     {
         currentPlayerHealth = health;
+        PlayerStatsChanged?.Invoke(); // Notify listeners that player stats have changed
     }
 
     public void SetCurrentPlayerAttack(int attack)
@@ -51,10 +53,12 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
     public void SetCurrentPlayerExperience(int experience)
     {
         playerExperience = experience;
+        PlayerStatsChanged?.Invoke(); // Notify listeners that player stats have changed
     }
     public void SetExperienceToNextLevel(int experience)
     {
         experienceToNextLevel = experience;
+        PlayerStatsChanged?.Invoke(); // Notify listeners that player stats have changed
     }
 
     public Vector2 GetCurrentPlayerPosition()
@@ -122,6 +126,7 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
         playerLevel++;
         experienceToNextLevel = CalculateExperienceToNextLevel(playerLevel);
         playerExperience = 0; // Reset experience after leveling up
+        PlayerStatsChanged?.Invoke(); // Notify listeners that player stats have changed
     }
 
     public void LoadPrevBattleData(DynamicGameData data)
