@@ -88,11 +88,15 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
         return experienceToNextLevel;
     }
 
+    public int GetMaxPlayerHealth()
+    {
+        return maxPlayerHealth;
+    }
     public void LoadData(GameData data)
     {
-        maxPlayerHealth = data.playerHealth;
         playerLevel = data.playerLevel;
-        currentPlayerHealth = CalculateHealthWithLevel(data.playerHealth, data.playerLevel);
+        maxPlayerHealth = CalculateHealthWithLevel(data.maxPlayerHealth, data.playerLevel);
+        currentPlayerHealth = data.playerHealth;
         currentPlayerAttack = CalculateStatWithLevel(data.playerAttack, data.playerLevel);
         currentPlayerSpeed = CalculateStatWithLevel(data.playerSpeed, data.playerLevel);
         playerPosition = data.playerPosition;
@@ -107,7 +111,7 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
 
     public void SaveData(ref GameData data)
     {
-        data.maxPlayerHealth = maxPlayerHealth;
+        data.playerHealth = currentPlayerHealth;
         data.playerPosition = playerPosition;
         data.playerLevel = playerLevel;
         data.playerExperience = playerExperience;
