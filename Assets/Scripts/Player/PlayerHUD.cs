@@ -6,6 +6,7 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private TMP_Text experienceText;
+    [SerializeField] private TMP_Text catnipText;
     private void OnEnable()
     {
         if(PlayerManager.instance == null)
@@ -28,7 +29,7 @@ public class PlayerHUD : MonoBehaviour
         healthText.text = "HP: " + PlayerManager.instance.GetCurrentPlayerHealth();
         levelText.text = "Lvl: " + PlayerManager.instance.GetCurrentPlayerLevel();
         experienceText.text = "EXP: " + PlayerManager.instance.GetCurrentPlayerExperience() + "/" + PlayerManager.instance.GetExperienceToNextLevel();
-
+        catnipText.text = "Catnip: " + PlayerManager.instance.GetCurrentCatnip();
     }
 
 }
