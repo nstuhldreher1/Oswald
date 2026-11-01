@@ -43,6 +43,10 @@ public class PlayerMovement : MonoBehaviour
             interactionDetectorPrefab.GetComponent<InteractionDetector>().OnInteract();
             Debug.Log("Interact pressed");
         }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            PlayerManager.instance.TryUseCatnip();
+        }
         if(PauseController.instance != null && PauseController.instance.getIsGamePaused())
         {
             rb.linearVelocity = Vector2.zero;
