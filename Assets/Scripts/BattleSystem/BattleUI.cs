@@ -10,4 +10,9 @@ public class BattleUI : MonoBehaviour
     {
         StartCoroutine(BattleManager.instance.RunFromBattle());
     }
+
+    public void UseCatnipButtonClicked()
+    {
+        StartCoroutine(BattleManager.instance.UseCatnip());
+    }
 }

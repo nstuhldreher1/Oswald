@@ -104,6 +104,29 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(PlayerTurn());
     }
 
+    public IEnumerator UseCatnip()
+    {
+        if (!isPlayerTurn)
+        {
+            yield break;
+        }
+
+        if (PlayerManager.instance.TryUseCatnip())
+        {
+            battleOptionsPanel.SetActive(false);
+            dialoguePanel.SetActive(true);
+            yield return StartCoroutine(TypeWriterEffect("Oswald uses catnip to heal!", 0.03f));
+            isPlayerTurn = false;
+            NextTurn();
+        }
+        else
+        {
+            yield return StartCoroutine(TypeWriterEffect("Can't use catnip!", 0.03f));
+            isPlayerTurn = false;
+            NextTurn();
+        }
+    }
+
     private IEnumerator PlayerTurn()
     {
         int damage = calculateDamage(PlayerManager.instance.GetCurrentPlayerAttack());

@@ -12,6 +12,8 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
     private int playerLevel = 1;
     private int playerExperience = 0;
     private int experienceToNextLevel = 100;
+    private int maxCatnip = 3;
+    private int currentCatnip = 3;
     private Vector2 playerPosition;
     public event Action PlayerStatsChanged;
 
@@ -30,7 +32,7 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
     public void SetCurrentPlayerHealth(int health)
     {
         currentPlayerHealth = health;
-        PlayerStatsChanged?.Invoke(); // Notify listeners that player stats have changed
+        PlayerStatsChanged?.Invoke(); 
     }
 
     public void SetCurrentPlayerAttack(int attack)
@@ -53,12 +55,27 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
     public void SetCurrentPlayerExperience(int experience)
     {
         playerExperience = experience;
-        PlayerStatsChanged?.Invoke(); // Notify listeners that player stats have changed
+        PlayerStatsChanged?.Invoke(); 
     }
     public void SetExperienceToNextLevel(int experience)
     {
         experienceToNextLevel = experience;
-        PlayerStatsChanged?.Invoke(); // Notify listeners that player stats have changed
+        PlayerStatsChanged?.Invoke(); 
+    }
+
+    public void SetCurrentCatnip(int catnip)
+    {
+        currentCatnip = catnip;
+        PlayerStatsChanged?.Invoke(); 
+    }
+
+    public int GetCurrentCatnip()
+    {
+        return currentCatnip;
+    }
+    public int GetMaxCatnip()
+    {
+        return maxCatnip;
     }
 
     public Vector2 GetCurrentPlayerPosition()
@@ -148,6 +165,27 @@ public class PlayerManager : MonoBehaviour, IDataPersistence
      private int CalculateHealthWithLevel(int baseHealth, int level)
     {
         return Mathf.RoundToInt(baseHealth + (10 * (level - 1)));
+    }
+    public bool TryUseCatnip()
+    {
+        if (currentCatnip > 0 && currentPlayerHealth < maxPlayerHealth)
+        {
+            currentCatnip--;
+            int halfHealth = Mathf.CeilToInt(maxPlayerHealth * 0.5f); 
+            currentPlayerHealth = Mathf.Min(currentPlayerHealth + halfHealth, maxPlayerHealth);
+            PlayerStatsChanged?.Invoke();
+            return true; 
+        }
+        else
+        {
+            return false; 
+        }
+    }
+
+    public void RestoreCatnip()
+    {
+        currentCatnip = maxCatnip;
+        PlayerStatsChanged?.Invoke();
     }
 
 }
