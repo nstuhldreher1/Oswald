@@ -15,8 +15,16 @@ MonoBehaviour:
   zoneName: Forest
   encounterEntries:
   - enemy: {fileID: 11400000, guid: 0c965a0f5e74d9e4ba79e41396bbaf71, type: 2}
-    weight: 2
+    weight: 3
   - enemy: {fileID: 11400000, guid: 1caf23d5b3a8c1046b1b4809669672ae, type: 2}
+    weight: 3
+  - enemy: {fileID: 11400000, guid: d6e5ecb48fa89054cb100ed3bfd1644b, type: 2}
+    weight: 3
+  - enemy: {fileID: 11400000, guid: 7959b1d979c23dd4d888db840c26487c, type: 2}
+    weight: 3
+  - enemy: {fileID: 11400000, guid: 27ee0247fca5ce24a948380d1bd66ca9, type: 2}
+    weight: 3
+  - enemy: {fileID: 11400000, guid: 5c27480cc9cdf8e44ac78f7a13e284f8, type: 2}
     weight: 1
   levelMin: 1
   levelMax: 5

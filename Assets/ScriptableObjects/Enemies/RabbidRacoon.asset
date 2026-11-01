@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 277526d605093af4287ee925a1b816f7, type: 3}
+  m_Name: RabbidRacoon
+  m_EditorClassIdentifier: 
+  enemyName: Rabbid Racoon
+  health: 15
+  speed: 5
+  attack: 5
+  baseExperienceReward: 10
+  enemySprite: {fileID: -6606545771418088835, guid: d102d3b5097c93d49b760c70ce59178e, type: 3}
