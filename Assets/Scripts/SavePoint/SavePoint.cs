@@ -17,6 +17,7 @@ public class SavePoint : MonoBehaviour, IInteractable
     public void Interact()
     {
         PlayerManager.instance.SetCurrentPlayerHealth(PlayerManager.instance.GetMaxPlayerHealth());
+        PlayerManager.instance.RestoreCatnip();
         DataPersistenceManager.instance.SaveGame();
         savePointStatusPrefab.SetActive(true);
         hideStatusCoroutine = StartCoroutine(HideSaveStatus());
